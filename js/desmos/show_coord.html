@@ -1,0 +1,93 @@
+
+
+<!DOCTYPE html>
+<html>
+
+<style>
+.div-inline{display: inline;}
+</style>
+
+<head>
+  
+
+
+  <meta charset="utf-8">
+
+  <script src="https://www.desmos.com/api/v0.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+
+</head>
+<body>
+  <div id="calculator" style="width: 700px; height: 400px;"></div>
+  <div id="inputDiv" style="width: 200px; height: 400px;">
+  	<div class="div-inline">
+  		 <h3>输入坐标点</h3> <button type="button" onclick="showCoord()">展示结果</button>
+  	</div>
+  	 <textarea id="inputText" style="width: 200px; height: 100px;" value="(1,2),(3,4)"></textarea>
+  </div>
+
+  <script >
+
+  	var elt = document.getElementById('calculator');
+	var calculator = Desmos.GraphingCalculator(elt);
+
+  	function showCoordInDesmos(xValues, yValues) {
+
+	    calculator.setExpression({
+	    	type:'table',
+	    	columns:[
+		    	{
+			      latex: 'x',
+			      values: xValues
+			    },
+			    {
+			      latex: 'y',
+			      values: yValues,
+			      dragMode: Desmos.DragModes.XY
+			    }
+	    	],
+	    	id: "cal"
+	    });
+
+	}
+
+    function showCoord() {
+    	var textarea = document.getElementById('inputText');
+    	var textareaValue = '';
+    	textareaValue = textarea.value;
+
+    	//使用正则查找出数字包括小数
+    	// var regExp = /^[+-]?(0|([1-9]\d*))(\.\d+)?$/;
+    	var regExp = /[+-]?(\d+)(\.\d+)?/g;
+    	
+    	
+    	var xValues = [];
+    	var yValues = [];
+    	var x_index = 0;
+    	var y_index = 0;
+    	if(textareaValue.length != 0) {
+	    	var result = textareaValue.match(regExp);
+	    	var length = result.length;
+	    	for (var i = 0; i < length; i++) {
+	    		if(i % 2 == 0){
+	    			xValues[x_index++] = result[i];
+	    		} else {
+					yValues[y_index++] = result[i];
+	    		}
+	    	}
+	    }
+		console.log(xValues);
+		console.log(yValues);
+
+		showCoordInDesmos(xValues,yValues)
+
+    }
+
+    showCoord();
+
+  </script>
+  
+
+
+</body>
+</html>
